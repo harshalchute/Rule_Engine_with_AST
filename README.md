@@ -29,11 +29,10 @@ This project uses **Spring Boot** for REST APIs, **JPA** for database operations
 
 - Java 17+
 - Maven
-- Database (H2, MySQL, PostgreSQL, etc. - depending on your configuration)
+- Database MySQL
 
 ## Project Structure
 
-```bash
 ├── src/main/java
 │   ├── com.Rule_Engine_with_AST
 │   │   ├── Controller       # REST controllers handling API requests
@@ -54,9 +53,9 @@ This project uses **Spring Boot** for REST APIs, **JPA** for database operations
 - **Request Body**: 
   ```json
   {
-    "name": "Rule1",
-    "ruleString": "age > 30 AND department = 'Sales'"
-  }
+    "name": "Department Rule",
+    "ruleString": "department = 'Sales'"
+}
   ```
 - **Response**: Returns the created rule with an ID.
 
@@ -76,7 +75,8 @@ This project uses **Spring Boot** for REST APIs, **JPA** for database operations
   ```json
   [
     "age > 30",
-    "department = 'Sales'"
+    "department = 'Sales'",
+    "salary > 50000"
   ]
   ```
 - **Response**: The combined AST structure.
@@ -88,13 +88,27 @@ This project uses **Spring Boot** for REST APIs, **JPA** for database operations
 - Evaluates a rule against user attributes.
 - **Request Body**:
   ```json
+  TRUE CASE :
   {
     "ruleString": "age > 30 AND department = 'Sales'",
     "attributes": {
-      "age": 35,
-      "department": "Sales"
+        "age": 35,
+        "department": "Sales",
+        "salary": 60000
     }
   }
+
+```json
+FALSE CASE :
+{
+    "ruleString": "age > 30 AND department = 'Marketing'",
+    "userAttributes": {
+        "age": 28,
+        "department": "Sales"
+    }
+}
+
+
   ```
 - **Response**: Returns `true` or `false` depending on whether the rule conditions are satisfied.
 
@@ -141,72 +155,3 @@ mvn spring-boot:run
 ```
 
 The application will be available at `http://localhost:8080`.
-
-### 5. Using Postman (or Curl)
-
-You can interact with the API using tools like **Postman** or **curl** by sending requests to the available endpoints.
-
-For example, to create a rule:
-
-```bash
-curl -X POST http://localhost:8080/rules/create -H "Content-Type: application/json" -d '{"name": "Rule1", "ruleString": "age > 30 AND department = 'Sales'"}'
-```
-
-## Example Usage
-
-### 1. Create a Rule
-
-Request:
-
-```bash
-POST /rules/create
-{
-  "name": "Age and Department Check",
-  "ruleString": "age > 30 AND department = 'Sales'"
-}
-```
-
-Response:
-
-```json
-{
-  "id": 1,
-  "name": "Age and Department Check",
-  "ruleString": "age > 30 AND department = 'Sales'"
-}
-```
-
-### 2. Evaluate a Rule
-
-Request:
-
-```bash
-POST /rules/evaluate
-{
-  "ruleString": "age > 30 AND department = 'Sales'",
-  "attributes": {
-    "age": 35,
-    "department": "Sales"
-  }
-}
-```
-
-Response:
-
-```json
-{
-  "result": true
-}
-```
-
-## Future Enhancements
-
-- **Advanced Rule Parsing**: Support more complex operators and conditions.
-- **Rule Versioning**: Keep track of rule changes over time.
-- **Dynamic Rule Creation**: Allow users to create rules dynamically via a web interface.
-- **Improved Error Handling**: Provide detailed error messages for invalid rule strings.
-  
-## Contributing
-
-Contributions are welcome! Please submit a pull request or raise an issue if you'd like to contribute or report a bug.
-
