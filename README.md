@@ -1,7 +1,3 @@
-Here's a README file for your Rule Engine with AST (Abstract Syntax Tree) project:
-
----
-
 # Rule Engine with AST
 
 ## Overview
@@ -129,24 +125,7 @@ Ensure you have **Maven** installed, then run the following command to build the
 mvn clean install
 ```
 
-### 3. Configure the Database
-
-By default, the project is set up to use an in-memory **H2** database. If you wish to use a different database, update the `application.yml` file in the `src/main/resources` directory.
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-```
-
-### 4. Run the Application
+### 3. Run the Application
 
 Run the Spring Boot application using Maven:
 
@@ -154,4 +133,3 @@ Run the Spring Boot application using Maven:
 mvn spring-boot:run
 ```
 
-The application will be available at `http://localhost:8080`.
